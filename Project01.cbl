@@ -1,6 +1,6 @@
       ******************************************************************
       * Author: Soomin Lee CST8283 304
-      * Date: 07-FEB-2023
+      * Date: 11-FEB-2023
       * Purpose:
       * Tectonics: cobc
       ******************************************************************
@@ -21,21 +21,12 @@
            05 STUDENT-NAME PIC X(40).
 
        WORKING-STORAGE SECTION.
-       01 STUDENT-RECORD-OUT-FORMATTED.
-           05 STUDENT-NUM-OUT      PIC 9(5).
-           05 FILLER               PIC X(5) VALUE SPACES.
-           05 TUITION-OWED-OUT     PIC 9(5).
-           05 FILLER               PIC X(5) VALUE SPACES.
-           05 STUDENT-NAME-OUT     PIC A(40).
-
-       01 WS-EOF PIC A(1).
-       01 ANSWER PIC A(1).
-       01 COUNTER PIC 9(10) VALUES 0.
+       01 ANSWER PIC A(1) VALUE 'A'.
 
        PROCEDURE DIVISION.
        101-PRODUCE-STUDENT-RECORD.
        PERFORM 201-INITIATE.
-       PERFORM 202-PROCESS-ONE-STUDENT.
+       PERFORM 202-PROCESS-ONE-STUDENT UNTIL ANSWER = 'Q'.
        PERFORM 203-CLOSE-FILE.
        STOP RUN.
 
@@ -44,20 +35,15 @@
 
            202-PROCESS-ONE-STUDENT.
                PERFORM 303-ACCEPT-DATA.
-               PERFORM 304-WRITE-DATA UNTIL ANSWER='q'.
+               PERFORM 304-WRITE-DATA.
                PERFORM 301-CONTINUE-OR-NOT.
 
            203-CLOSE-FILE.
                CLOSE STUDENT-RECORD.
 
                301-CONTINUE-OR-NOT.
-                  IF COUNTER = 0
-                     THEN  DISPLAY "Continue? (q for quit, y for yes)"
-                         ACCEPT ANSWER
-                         IF ANSWER = 'y'
-                           THEN MOVE 1 TO COUNTER
-                         END-IF
-                  END-IF.
+                  DISPLAY "Continue? (Q for quit, Y for yes)"
+                  ACCEPT ANSWER.
 
                302-OPEN-FILE.
                    OPEN OUTPUT STUDENT-RECORD.
@@ -65,18 +51,15 @@
                303-ACCEPT-DATA.
                    DISPLAY "PLEASE ENTER STUDENT NUMBER:".
                    ACCEPT STUDENT-NUM.
+
                    DISPLAY "PLEASE ENTER TUITION OWED:".
                    ACCEPT TUITION-OWED.
+
                    DISPLAY "PLEASE ENTER STUDENT NAME:".
                    ACCEPT STUDENT-NAME.
 
                304-WRITE-DATA.
-                   MOVE STUDENT-NUM TO STUDENT-NUM-OUT.
-                   MOVE TUITION-OWED TO TUITION-OWED-OUT.
-                   MOVE STUDENT-NAME TO STUDENT-NAME-OUT.
-
                    WRITE STUDENT-RECORD-IN
-                     FROM STUDENT-RECORD-OUT-FORMATTED
-                       AFTER ADVANCING 2 LINE.
+                   AFTER ADVANCING 2 LINES.
 
-       END PROGRAM PROJECT01.
+           END PROGRAM PROJECT01.
