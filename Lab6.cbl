@@ -20,6 +20,10 @@
            05 CAR-TYPE PIC X(5).
            05 CAR-YEAR PIC 9(4).
            05 ENGINE-SIZE PIC 9(1).
+       01 CAR-OUT.
+           05 CAR-TYPE-OUT PIC X(5).
+           05 CAR-YEAR-OUT PIC 9(4).
+           05 ENGINE-SIZE-OUT PIC 9(1).
 
        WORKING-STORAGE SECTION.
        01 EOF-FLG PIC X.
@@ -69,10 +73,11 @@
 
                304-WRITE-DATA-TABLE.
                    ADD 1 TO SUB-1.
-                   MOVE CAR-TYPE-IN TO CAR-TYPE(SUB-1).
-                   MOVE CAR-YEAR-IN TO CAR-YEAR(SUB-1).
-                   MOVE ENGINE-SIZE-IN TO ENGINE-SIZE(SUB-1).
+                   MOVE CAR-TYPE-IN TO CAR-TYPE(SUB-1) CAR-TYPE-OUT.
+                   MOVE CAR-YEAR-IN TO CAR-YEAR(SUB-1) CAR-YEAR-OUT.
+                   MOVE ENGINE-SIZE-IN
+                   TO ENGINE-SIZE(SUB-1) ENGINE-SIZE-OUT.
 
-                   WRITE CAR-FILE.
+                   WRITE CAR-OUT.
 
        END PROGRAM LAB6.
